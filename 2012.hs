@@ -91,10 +91,56 @@ WHNF means that every ddata structure is only evaluated up to the top level cons
 -}
 
 --4)
-
+{-
 fmap' :: Functor f => (a->b) -> f a -> f b
 
-fmap' f a =
+fmap' f a = do
 	x <- a
 	return (f x)
+	-}
+fmap'' f a = a >>= (\x -> return (f x)) -- == a >>= (return . f)
+
+--5)
+
+{-
+
+In the first one we give a list of tuples.
+we only take x == 2000 and create all y [1..100] where y is odd
+so (2000, 2n), n in [1..50] 
+
+The second gives the same thing but is more inefficiant as it creates all combinations and then filter them.
+
+-}
+
+-- 6) 
+
+data Tree = Branch String Tree Tree | Leaf String
+
+
+-- Check if same tree
+exSubTree = (Branch "5" 
+		(Branch "3" (Branch "4" (Leaf "10") (Leaf "20")) (Leaf "89")) 
+		(Branch "23" (Leaf "231") (Leaf "20"))
+	)
+
+tree = (Branch "10" exSubTree (Leaf "20")) 
+
+
+eqTree (Branch s1 l1 r1) (Branch s2 l2 r2) = s1 == s2 && eqTree l1 l2 && eqTree r1 r2
+
+eqTree (Leaf s1) (Leaf s2) = s1 == s2
+
+eqTree _ _ = False -- Branch can not be same as leaf 
+
+subTree t1 t2 = subTree' t1 t2 -- Is the tree t1 a subtree of t2?
+
+subTree' (Branch _ _ _) (Leaf _) = False --- Branch not subtree of leaf
+
+subTree' t1 (Branch s2 l2 r2) = 
+  eqTree t1 l2 ||
+  eqTree t1 r2 ||
+  subTree t1 l2 ||
+  subTree t1 r2
+ 
+
 
