@@ -70,11 +70,11 @@ A spark is a bit of code that will be ran by one of the available threads that h
 
 When i say something is evaluated  or similarily i mean to WHNF.
 
-seq is used to say that two parts of code should be ran one after the other, if seq x y then x shall be ran after the value for y is queried and calculated and the other way around.
+seq suggests execution of its first argument and will then return its second argument.
 
-pseq as seq says that they should be ran at around the same time but suggests that they could be done in parrallell.
+pseq as seq says that they should be ran at around the same time but forces the evaluation of x before y, the value from y is then returned
 
-par says that they should be done in parrallel but the first value should be returned firstly.
+par says that they should be done in parrallel but the second can be returned while the first is still executing.
 
 ============https://stackoverflow.com/questions/958449/what-is-a-spark-in-haskell
 
@@ -83,6 +83,11 @@ Sparks are an entry in the workpools for a specific thread that will be executed
 
 ============ More reading
 http://www.macs.hw.ac.uk/~dsg/gph/docs/Gentle-GPH/sec-gph.html
+https://hackage.haskell.org/package/parallel-3.2.2.0/docs/Control-Parallel.html
+
+
+WHNF means that every ddata structure is only evaluated up to the top level constructor.
+
 -}
 
 --4)
