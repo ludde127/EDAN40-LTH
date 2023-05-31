@@ -3,21 +3,37 @@ foo [] = []
 foo (x:xs) = foo xs ++ [x]
 
 {-
-Prove that foo (foo xs) = xs
+1)
 
-basecase foo (foo []) = foo ([]) = [] 
+foo :: [a] -> [a]
+foo [] = []
+foo (x:xs) = foo xs ++ [x]
 
-inductive
+prove that foo (foo xs) = xs
 
-foo xs = foo (x:xs1) = foo xs1 ++ [x] -> [xn, xn-1 , ... , x0]
+We start with the basecase xs = []
 
-foo (x: foo xs) = foo (xn: [xn-1 , ... , x0]) = foo [xn-1 , ... , x0] ++ [xn]
+foo (foo []) = foo [] = [], Works
 
+now assume this works for any xs
 
-foo reverses, so the reverse of the reverse is the same.  
+foo (foo (x:xs)) = foo (foo xs ++ [x])
 
-This is almost enought but not really, couldent be bothered tho.
+foo is clearly a reversing function, we now have to prove that 
+reverse (xs ++ ys) == (reverse ys) ++ (reverse xs)
 
+basecase xs = []
+reverse ([] ++ ys) = reverse ys = (reverse ys) ++ []
+
+inductive case, assuming reverse (xs ++ ys) = (reverse ys) ++ (reverse xs)
+reverse ((x:xs) ++ (ys)) = reverse (x: (xs ++ ys)) = (reverse (xs ++ ys)) ++ [x] = INSERT ASSUMTION = ((reverse ys) ++ (reverse xs)) ++ [x] =
+(reverse ys) ++ ((reverse xs) ++ [x]) = (reverse ys) ++ (reverse (x:xs))
+
+which shows it works for the larger case aswell.
+
+now we can get back to the problem
+
+foo (foo (x:xs)) = foo (foo xs ++ [x]) = foo [x] ++ foo (foo xs) = x:xs
 
 2)
 
@@ -87,6 +103,6 @@ yes gives Just 7
 
 {-
 a) The first version is much faster.
-b) This is because version 1 uses memoization by storing calculations in the simTable, in the other version calculations are redone many many times while they are only done once in the first version (if they are needed else never (lazy)).
+b) This is because version 1 uses memoization by storing calculations in the simTable, in the other version calculations are redone many many times while they are only done once in the first version (if they are needed else never (lazy)). 
 -}
 
